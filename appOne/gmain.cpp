@@ -1,3 +1,5 @@
+#define _FACE
+#ifdef _FACE
 #include"libOne.h"
 void roundFace(float px, float py) {
 	fill(255, 255, 0);
@@ -53,8 +55,9 @@ void gmain() {
 
 	}
 }
-
-/*#include"libOne.h"
+#endif
+#ifdef  _HPGAUGE
+#include"libOne.h"
 void gmain() {
 	window(1920, 1080, full);
 	//DATA
@@ -89,8 +92,11 @@ void gmain() {
 			text("Game Over", 700, 400);
 		}
 	}
-}*/
-/*void gmain() {
+}
+#endif
+#ifdef  _LIFE
+#include"libOne.h"
+void gmain() {
 	window(1920, 1080, full);
 	//ÉfÅ[É^
 	int life = 5;
@@ -125,8 +131,9 @@ void gmain() {
 			circle(px + offsetX, py + offsetY, radius * 2);
 		}
 	}
-}*/
-/*
+}
+#endif
+#ifdef _MOVE
 #include"libOne.h"
 void gmain(){
 	window(1920,1080,full);
@@ -171,4 +178,5 @@ void gmain(){
 
 
 	}
-}*/
+}
+#endif
