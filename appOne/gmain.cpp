@@ -1,31 +1,120 @@
-#define _FACE
+#define _SORT
+#ifdef _SORT
+#include"libOne.h"
+void gmain() {
+	window(1100, 1000);
+	const int num = 20;
+	int score[num];
+	int r, c;
+	for (int i = 0; i < num; i++) {
+		score[i] = random() % 1001;
+	}
+	while (notQuit) {
+		clear(60);
+		if (isTrigger(KEY_A)) {
+			for (int i = 0; i < num; i++) {
+				score[i] = random() % 1001;
+			}
+		}
+
+		if (isTrigger(KEY_D)) {
+			//r(一番大きい)とc(比較対象)
+			for (r = 0; r < num - 1; r++) {
+				for (c = r + 1; c < num; c++) {
+					//rとcでcがおおきかったら交換する
+					if (score[r] < score[c]) {
+						//2つの変数を一気に交換はできないのでwをはさむ
+						int w = score[r];
+						score[r] = score[c];
+						score[c] = w;
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < num; i++) {
+			print(score[i]);
+			rect(100, 50 * i, score[i], 40);
+		}
+	}
+
+}
+#endif
+#ifdef _SHOOT
+#include"libOne.h"
+void gmain() {
+	window(1920, 1080, full);
+	//
+	angleMode(DEGREES);
+	struct PLAYER {
+		float px, py, w, h, vx,ofsY;
+	};
+	struct BULLET {
+		//
+		float px, py, w, h,vx, vy,deg;
+		int hp = 0;
+	};
+	struct PLAYER p;
+	p.px = width / 2;
+	p.py = height - 150;
+	p.w = 100;
+	p.h = 200;
+	p.vx = 10;
+	p.ofsY = -110;
+	const int numBullets = 10;
+	struct BULLET b[numBullets];
+	for (int i = 0; i < numBullets; i++) {
+		b[i].px = p.px;
+		b[i].py = p.py;
+		b[i].w = 20;
+		b[i].h = 40;
+		//
+		b[i].deg = random() % 181;
+		b[i].vx = cos(b[i].deg)*5;
+		b[i].vy = -10;
+	}
+
+	while (notQuit) {
+		if (isPress(KEY_A)) { p.px += -p.vx; }
+		if (isPress(KEY_D)) { p.px += p.vx; }
+
+		if (isTrigger(KEY_SPACE)) {
+			for (int i = 0; i < numBullets; i++) {
+				if (b[i].hp == 0) {
+					b[i].hp = 1;
+					b[i].px = p.px;
+					b[i].py = p.py + p.ofsY;
+					i = numBullets;
+				}
+			}
+		}
+		for (int i = 0; i < numBullets; i++) {
+			if (b[i].hp > 0) {
+				//
+				b[i].px += b[i].vx;
+				b[i].py += b[i].vy;
+				//ウィンドウの外に出た
+				if (b[i].py < -b[i].h) {
+					b[i].hp = 0;
+				}
+			}
+		}
+
+		clear();
+		rectMode(CENTER);
+		rect(p.px, p.py, p.w, p.h);
+		for (int i = 0; i < numBullets; i++) {
+			if (b[i].hp > 0) {
+				rect(b[i].px, b[i].py, b[i].w, b[i].h);
+			}
+		}
+	}
+}
+
+#endif
 #ifdef _FACE
 #include"libOne.h"
-void roundFace(float px, float py) {
-	fill(255, 255, 0);
-	circle(px, py, 300);
-	fill(255);
-	circle(px - 50, py, 80);
-	circle(px + 50, py, 80);
-	fill(0);
-	circle(px - 50, py, 30);
-	circle(px + 50, py, 30);
-	fill(255, 200, 200);
-	circle(px, py + 80, 80);
-}
-void squareFace(float px, float py,float angle) {
-	rectMode(CENTER);
-	fill(255, 255, 0);
-	rect(px, py, 300,300,angle);
-	fill(255);
-	rect(px - 50, py, 80,80,angle);
-	rect(px + 50, py, 80,80,angle);
-	fill(0);
-	rect(px - 50, py, 30,30,angle);
-	rect(px + 50, py, 30,30,angle);
-	fill(255, 200, 200);
-	rect(px, py + 80, 80,80,angle);
-}
+#include"face.h"
 void gmain() {
 	window(1920, 1080, full);
 	float px = width / 2;
@@ -51,8 +140,6 @@ void gmain() {
 				squareFace(px + ofsX * i, py + ofsY*i, angle);
 			}
 		}
-
-
 	}
 }
 #endif
