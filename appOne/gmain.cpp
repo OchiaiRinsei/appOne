@@ -1,4 +1,41 @@
-#define _SORT
+#define _HSV
+#ifdef _HSV
+#include"libOne.h"
+void gmain() {
+	window(1920, 1080, full);
+	colorMode(HSV);
+	angleMode(DEGREES);
+	float hue = 0;//äpìx
+	float satu = 255;//ç ìx
+	float value = 255;//ñæìx
+	while (notQuit) {
+		if (isPress(KEY_D)&&hue<360)hue += 5;
+		if (isPress(KEY_A)&&hue>0)hue -= 5;
+		if (isTrigger(KEY_W) && hue < 360)hue += 5;
+		if (isTrigger(KEY_S) && hue > 0)hue -= 5;
+		if (isPress(KEY_R) && satu < 255)satu += 5;
+		if (isPress(KEY_F) && satu > 0)satu -= 5;
+		if (isPress(KEY_T) && value < 255)value += 5;
+		if (isPress(KEY_G) && value > 0)value -= 5;
+		clear(0, 0, 0);
+		textSize(120);
+		fill(hue, satu, value);
+		text((let)"hue=" + hue, 600, 400);
+		text((let)"satu=" + satu, 600, 600);
+		text((let)"value=" + value, 600, 800);
+		int num = 128;
+		float angle = hue / num;
+		for (int i = 0; i < num; i++) {
+			float px = cos(angle*i) * 200;
+			float py = -sin(angle*i) * 200;
+			fill(angle*i, satu, value);
+			noStroke();
+			circle(1500+px, 540+py, 50);
+		}
+
+	}
+}
+#endif
 #ifdef _SORT
 #include"libOne.h"
 void gmain() {
